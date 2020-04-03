@@ -4,12 +4,15 @@
   "description": "an FTP server app",
   "main": "index.js",
   "dependencies": {
+    "ftp": "^0.3.10",
     "ftp-srv": "^4.3.1",
-    "ftp": "^0.3.10"
+    "http-server": "^0.12.1",
+    "mongoose": "^5.9.7"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

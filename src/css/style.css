@@ -1,0 +1,44 @@
+@import "./bulma.min.css";
+:root {
+	--main-color: #ffee52;
+	--sec-color: #eee79c;
+}
+
+html {
+	overflow:hidden;
+}
+
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+}
+  
+  /* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1; 
+}
+  
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: rgb(172, 172, 171); 
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+}
+
+.main-color{
+	background-color: var(--main-color);
+}
+.sec-color{
+	background-color: var(--sec-color);
+}
+
+body{
+	background: url(../images/background.svg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}

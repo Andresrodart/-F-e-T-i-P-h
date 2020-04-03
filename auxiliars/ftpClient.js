@@ -12,4 +12,7 @@ c.on('ready', function() {
 c.on('error', e => console.error(e));
 
 // connect to localhost:21 as anonymous
-c.connect({port:5050});
+c.connect({
+	host: "192.168.1.68",
+	port: 5050
+});

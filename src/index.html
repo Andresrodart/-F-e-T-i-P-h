@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>(F)e(T)i(P)h!</title>
+		<script defer src="./javascript/all.min.js"></script> <!--load all styles -->  
+		<link rel="stylesheet" href="./css/style.css">
+	</head>
+	<body>
+		<progress id='sending_file' class="progress is-danger is-hidden" max="100">15%</progress>
+		
+		<section class="hero is-fullheight" id='welcome'>
+			<div class="hero-body"> 
+				<div class="container" id="ingresar"> 
+					<div class="columns is-vcentered">
+						<div class="column has-text-centered">
+							<h1 class="title">
+								Welcome To Fetiph
+							</h1>
+							<button class="button main-color" onclick='ingresar()'>Ingresar</button>
+						</div>
+					</div>
+				</div>
+				
+				<div class="container is-hidden" id='name'> 
+					<div class="columns">
+						<div class="column has-text-centered is-hidden error" id="bad_login">
+								Uknown credentials 7.7
+						</div>
+					</div>
+					<div class="columns">
+						<div class="column has-text-centered">
+							<h2 class="title">
+								What´s your name?
+							</h2>
+						</div>
+					</div>
+					<div class="columns">
+						<div class="column is-one-quarter"></div>
+						<div class="column"> 
+							<input class="input is-rounded" type="text" placeholder="Type your name or nickname" id='usrName'>
+						</div>
+						<div class="column is-1"> 
+							<button class="button main-color" onclick='checkName()'>Ok</button>
+						</div>
+						<div class="column is-one-quarter"></div>
+					</div>
+				</div>
+			</div>
+			
+		</section>
+
+		<script defer src="./javascript/operations.js"></script> <!--load all styles -->  
+	</body>
+	</html>

@@ -1,0 +1,12 @@
+{
+	"db":			"json",
+	"main_folder":	"./DB/",
+	"ftp_conf":{
+					"url": 			"ftp://192.168.1.72:5050",
+					"pasv_url":		"192.168.1.72"
+	},
+	"mongo_conf":{
+					"mongo_host": 	"localhost",
+					"mongo_port":	27017
+	}
+}
