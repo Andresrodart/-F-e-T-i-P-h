@@ -1,0 +1,24 @@
+{
+  "name": "-f-e-t-i-p-h",
+  "version": "1.0.0",
+  "description": "an FTP server app",
+  "main": "index.js",
+  "dependencies": {
+    "ftp-srv": "^4.3.1",
+    "ftp": "^0.3.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andresrodart/-F-e-T-i-P-h.git"
+  },
+  "author": "Andresrodart",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Andresrodart/-F-e-T-i-P-h/issues"
+  },
+  "homepage": "https://github.com/Andresrodart/-F-e-T-i-P-h#readme"
+}
