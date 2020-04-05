@@ -8,5 +8,10 @@
 	"mongo_conf":{
 					"mongo_host": 	"localhost",
 					"mongo_port":	27017
+	},
+	"http_admin_tool":{
+					"secret":		"session secret",
+					"host":			"localhost",
+					"port":			3000
 	}
 }

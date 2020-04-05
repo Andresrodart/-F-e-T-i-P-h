@@ -12,6 +12,7 @@ if(conf.db === "mongo") mongoose.connect('mongodb://localhost/');
 
 FTPserver.on('up', url => {
 	console.log(`service up in ${url}`);
-	httpServer.start();
+	new httpServer().start();
 });
+
 FTPserver.start();
