@@ -54,8 +54,7 @@ function checkCredentials(user, pass){
 	});
 	genericOptions.body = data;
 	genericPost('/checkAdmin', genericOptions, (answer) => {
-		if(answer) genericGet('./workstation');
-		else document.getElementById('bad_login').classList.remove('is-hidden');
+		if(!answer) document.getElementById('bad_login').classList.remove('is-hidden');
 	});
 }
 
@@ -71,7 +70,9 @@ function registerAdmin(){
 function genericPost(url, options, callback){
 	fetch(url, options)
 	.then((response) => {
-			return response.json();
+		if (response.redirected) window.location.href = response.url;
+		else return response.json();
+		return true;
 	})
 	.then((data) => {
 		if(callback) callback(data);

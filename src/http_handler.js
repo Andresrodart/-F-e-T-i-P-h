@@ -9,7 +9,6 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => res.start('index.html'));
-app.get('/workstation', (req, res) => res.sendFile('workstation.html'));
 
 class http_handler{
 	constructor(mongoHandler = null, options = {}){
@@ -22,18 +21,23 @@ class http_handler{
 		this.credentials = {};
 
 		this.initCredentials();
-		
-		app.get('/isAdminNew', (req, res) => res.json(Object.keys(this.credentials.admins).length));
-		app.post('/firstAdmin', (req, res) => this.registerCredential('admin', req.body.user, req.body.pass, res));
-		app.post('/checkAdmin', (req, res) => this.checkCredential('admin', req.body.user, req.body.pass, res));
 
 		app.use(session({
 			secret: this.options.secret,
 			resave: false,
 			saveUninitialized: true,
-			cookie: { secure: true }
+			cookie: { secure: false }
 		}));
-		app.use((req, res, next) => {
+
+		app.get('/isAdminNew', (req, res) => res.json(Object.keys(this.credentials.admins).length));
+		app.get('/workstation', (req, res) => {
+			if (!req.session.user) res.redirect('/');
+			else res.sendFile(__dirname + '/workstation.html');
+		});
+		app.post('/checkAdmin', (req, res) => this.checkCredential('admin', req.body.user, req.body.pass, res, req));
+		app.post('/firstAdmin', (req, res) => this.registerCredential('admin', req.body.user, req.body.pass, res));
+
+		app.use((req, res) => {
 			console.log(req.url);
 			res.status(404).send("Sorry can't find that!");
 		});
@@ -57,24 +61,24 @@ class http_handler{
 				if (err) throw err;
 				let data = { "user": user, "pass": hash};
 				if(type === 'admin') this.credentials.admins[user] = data;
-				console.log(this.credentials);
 				fs.writeFile('./local/credentials.json', JSON.stringify(this.credentials, null, 4), err => {
-					if(err) res.json(fasle);
+					if(err) res.json(false);
 					res.json(true);
 				});
 			});
 		}
 	}
-	checkCredential(type, user, pass, res){
+	checkCredential(type, user, pass, res, req){
 		if(this.db) /*to Do */;
 		else{
 			let hash = '';
-			if(type === 'admin') hash = this.credentials.admins[user].pass;
+			if(type === 'admin' && this.credentials.admins[user])
+			hash = this.credentials.admins[user].pass;
 			bcrypt.compare(pass, hash, (err, result) => {
 				if (err) throw err;
-				req.session.userId = user._id;
-				req.session.mail = user.email;
-				return res.redirect('/home');
+				if(result && (req.session.user = user))
+					return res.redirect('/workstation');
+				else return res.json(false);
 			});
 		}
 	}

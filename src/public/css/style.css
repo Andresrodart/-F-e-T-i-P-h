@@ -42,3 +42,15 @@ body{
 	-o-background-size: cover;
 	background-size: cover;
 }
+
+.column.is-rounded{
+	border-radius: 15px 5px 5px 15px;
+}
+
+.workarea{
+	position: relative;
+	display: flex;
+    flex-flow: column;
+	overflow-y: auto;
+	height: 60vh;
+}
