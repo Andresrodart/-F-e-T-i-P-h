@@ -1,5 +1,5 @@
 {
-	"db":			"json",
+	"db":			"mongo",
 	"main_folder":	"./DB/",
 	"ftp_conf":{
 					"url": 			"ftp://192.168.1.72:5050",
@@ -7,7 +7,8 @@
 	},
 	"mongo_conf":{
 					"mongo_host": 	"localhost",
-					"mongo_port":	27017
+					"mongo_port":	27017,
+					"mongo_db":		"FETIPH"
 	},
 	"http_admin_tool":{
 					"secret":		"session secret",
