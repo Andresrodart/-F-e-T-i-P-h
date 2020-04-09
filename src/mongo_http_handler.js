@@ -46,6 +46,7 @@ class http_handler{
 	}
 
 	registerCredential(type, user, pass, res){
+		//this.db.collection('users').findOne({name:user, isAdmin:true}).then()
 		getHash(pass, hash => {
 			this.db.collection('users').insertOne({name:user, pass:hash, isAdmin:(type === 'admin')}, (err, result) => {
 				if(err) res.json(false);
