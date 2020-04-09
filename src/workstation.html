@@ -50,24 +50,44 @@
 			</div>
 			<!-- Hero content: will be in the middle -->
 			<div class="hero-body">
-				<div class="container"> 
-					<h1 class="title">
-						Title
+				<div class="container" id='workarea'> 
+					<!-- <h1 class="title has-text-centered">
+						Overview
 					</h1>
-					<h2 class="subtitle">
-						Subtitle
-					</h2>
-					<div class="columns">
-						<div class="column">
-							<div class="workarea">
-								<h1 class="title">
-									Title
-								  </h1>
-								  <h2 class="subtitle">
-									Subtitle
-								  </h2>
+					<h2 class="subtitle has-text-centered">
+						General information
+					</h2> -->
+					<div class="columns" id="workarea">
+						<nav class="column option-panel is-2 is-rounded is-paddingless">
+							<div id='Overview-options'>
 							</div>
-						</div>	
+							<div id='Access-options' class="is-hidden">
+							</div>
+							<div id='Users-options' class="is-hidden">
+								<ul>
+									<li class="is-active"><a onclick="changeOption(this)"><p>Registrar</p></a></li>
+								</ul>
+							</div>
+						</nav>
+						<div class="column" id ='Overview'>
+						</div>
+						<div class="column is-hidden" id='Access'>
+						</div>
+						<div class="column is-hidden" id='Users'>
+							<div class="columns is-multiline is-centered">
+								<div id='Registrar'>
+									<div class="column is-two-thirds"> 
+										<input class="input is-rounded" type="text" placeholder="Type your name or nickname" id='newUser'>
+									</div>
+									<div class="column is-two-thirds"> 
+										<input class="input is-rounded" type="password" placeholder="Type your password" id='newUserPassword'>
+									</div>
+									<div class="column is-two-thirds has-text-centered"> 
+										<button class="button main-color" onclick='registerUser(document.getElementById("newUser").value, document.getElementById("newUserPassword").value)'>Ready!</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					
 				</div>
@@ -78,9 +98,9 @@
 			  <nav class="tabs is-boxed is-fullwidth">
 				<div class="container">
 				  <ul>
-					<li class="is-active"><a>Overview</a></li>
-					<li><a>Access</a></li>
-					<li><a>Users</a></li>
+					<li id='li-Overview' class="is-active"><a onclick="changeWorkArea(this.innerHTML)">Overview</a></li>
+					<li id='li-Access'><a onclick="changeWorkArea(this.innerHTML)">Access</a></li>
+					<li id='li-Users'><a onclick="changeWorkArea(this.innerHTML)">Users</a></li>
 					<!-- <li><a></a></li>
 					<li><a></a></li>
 					<li><a></a></li> -->
@@ -90,5 +110,6 @@
 			</div>
 		  </section>
 		<script defer src="./javascript/operations.js"></script> <!--load all styles -->  
+		<script defer src="./javascript/workstation.js"></script> <!--load all styles -->  
 	</body>
 	</html>

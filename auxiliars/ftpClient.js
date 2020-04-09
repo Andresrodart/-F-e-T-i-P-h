@@ -16,4 +16,5 @@ c.connect({
 	host: "192.168.1.72",
 	port: 5050,
 	user:"andy",
+	password: "password"
 });

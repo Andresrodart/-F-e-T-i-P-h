@@ -6,8 +6,7 @@
 					"pasv_url":		"192.168.1.72"
 	},
 	"mongo_conf":{
-					"mongo_host": 	"localhost",
-					"mongo_port":	27017,
+					"mongo_uri": 	"mongodb://localhost:27017",
 					"mongo_db":		"FETIPH"
 	},
 	"http_admin_tool":{
