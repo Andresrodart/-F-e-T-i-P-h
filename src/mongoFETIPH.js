@@ -17,7 +17,7 @@ class mongoFETIPH extends EventEmitter{
 			this.db.collection('users').findOne({name:username, isAdmin:false})
 			.then(result => {
 				if(result) compareHash(result.pass, password, (isCorrect) => {
-					if(isCorrect) resolve({root: './DB'});
+					if(isCorrect) resolve({root: './DB/' + result.room});
 					else reject("Log in pls");
 				});
 				else reject("Log in pls");
