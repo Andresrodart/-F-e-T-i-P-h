@@ -14,15 +14,15 @@ class mongoFETIPH extends EventEmitter{
 		this.httpServer = new httpServer(options.http_admin_tool);
 		this.FTPserver.on('login', ({connection, username, password}, resolve, reject) => { 
 			//connection.ip, username, password
-			this.db.collection('users').findOne({name:username, isAdmin:false}, (err, result) => {
-				if(err) throw err;
-				console.log(result.pass, password);
+			this.db.collection('users').findOne({name:username, isAdmin:false})
+			.then(result => {
 				if(result) compareHash(result.pass, password, (isCorrect) => {
 					if(isCorrect) resolve({root: './DB'});
-					reject("Log in pls");
+					else reject("Log in pls");
 				});
 				else reject("Log in pls");
-			});
+			})
+			.catch(err => {throw err.stack;});
 		});
 		
 		this.FTPserver.on ( 'client-error', (connection, context, error) =>{
@@ -32,16 +32,16 @@ class mongoFETIPH extends EventEmitter{
 		});
 	}
 	start(){
-		MongoClient.connect(this.options.mongo_conf.mongo_uri, { useUnifiedTopology: true }).catch(err => {throw err.stack})
-			.then(async client => {
-				this.db = client.db('FETIPH');
-				this.FTPserver.listen().then( () => { 
-				this.emit('up', this.FTPserver.options.url);
-				this.httpServer.start(this.db);
-			}).catch(err => {
-				this.emit('error', err);
-			});
-		});
+		MongoClient.connect(this.options.mongo_conf.mongo_uri, { useUnifiedTopology: true })
+		.then(client => {
+			this.db = client.db('FETIPH');
+			return this.FTPserver.listen();
+		})
+		.then(() => { 
+			this.emit('up', this.FTPserver.options.url);
+			this.httpServer.start(this.db);
+		})
+		.catch(err => {throw err.stack;});
 	}
 }
 

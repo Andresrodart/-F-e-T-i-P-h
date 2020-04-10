@@ -13,25 +13,28 @@ var genericOptions = {
 
 var currentWorkArea = 'Overview';
 
-function registerUser(user, password){
+function registerUser(user, room, password){
 	data = JSON.stringify({
 		user: user,
+		room: room,
 		pass: password
 	});
 	genericOptions.body = data;
 	genericPost('/postUser', genericOptions, (answer) => console.log(answer));
 }
 
-function changeWorkArea(neextArea) {
-	fade(document.getElementById(currentWorkArea), document.getElementById(neextArea));
-	fade(document.getElementById(currentWorkArea + '-options'), document.getElementById(neextArea + '-options'));
+function changeWorkArea(nextArea) {
+	fade(document.getElementById(currentWorkArea), document.getElementById(nextArea));
+	fade(document.getElementById(currentWorkArea + '-options'), document.getElementById(nextArea + '-options'));
 	document.getElementById('li-' + currentWorkArea).classList.remove('is-active');
-	document.getElementById('li-' + neextArea).classList.add('is-active');
-	currentWorkArea = neextArea;
+	document.getElementById('li-' + nextArea).classList.add('is-active');
+	currentWorkArea = nextArea;
+	document.getElementById('workarea-container').querySelector('h1.title').innerHTML = document.getElementById(currentWorkArea + '-options').querySelector('ul li.is-active a').innerHTML;
 }
 
 function changeOption(newOption) {
 	document.getElementById(currentWorkArea + '-options').querySelector('ul li.is-active').classList.remove('is-active');
+	document.getElementById('workarea-container').querySelector('h1.title').value = newOption.innerHTML;
 	newOption.classList.add('is-active');
-	//fade(document.getElementById(newOption), document.getElementById(currentWorkArea).querySelector('div:not(.is-hidden):not(.column)'));
+	//fade(document.getElementById(newOption.innerHTML), document.getElementById(currentWorkArea).querySelector('div:not(.is-hidden):not(.column)'));
 }

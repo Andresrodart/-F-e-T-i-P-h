@@ -32,11 +32,19 @@ class http_handler{
 			else res.sendFile(__dirname + '/workstation.html');
 		});
 		app.post('/checkAdmin', (req, res) => this.checkCredential('admin', req.body.user, req.body.pass, res, req));
-		app.post('/firstAdmin', (req, res) => this.registerCredential('admin', req.body.user, req.body.pass, res));
-		app.post('/postUser', (req, res) => this.registerCredential('user', req.body.user, req.body.pass, res));
+		app.post('/firstAdmin', (req, res) => {
+			this.db.collection('users').findOne({isAdmin:true}).
+			then(result => {
+				if(result) res.redirect('/');
+				else this.registerCredential('admin', req, res); 
+			}).catch(err => {throw err;});
+		});
+		app.post('/postUser', (req, res) => {
+			if(req.session.user) this.registerCredential('user', req, res);
+			else res.redirect('/');
+		});
 
 		app.use((req, res) => {
-			console.log(req.url);
 			res.status(404).send("Sorry can't find that!");
 		});
 		app.use((err, req, res, next) => {
@@ -45,15 +53,24 @@ class http_handler{
 		});
 	}
 
-	registerCredential(type, user, pass, res){
-		//this.db.collection('users').findOne({name:user, isAdmin:true}).then()
-		getHash(pass, hash => {
-			this.db.collection('users').insertOne({name:user, pass:hash, isAdmin:(type === 'admin')}, (err, result) => {
-				if(err) res.json(false);
-				res.json(true); 
+	registerCredential(type, req, res){
+		this.db.collection('users').findOne({name:req.body.user})
+		.then(result => {
+			if(result) res.json(false);
+			else getHash(req.body.pass, hash => {
+				this.db.collection('users').insertOne({
+					name:req.body.user, 
+					pass:hash, 
+					isAdmin:(type === 'admin'), 
+					room:(req.body.room)? req.body.room:null
+				})
+				.then(result => res.json(result)) 
+				.catch(err => {throw err;});	
 			});
-		});
+		})
+		.catch(err => {throw err;});
 	}
+
 	checkCredential(type, user, pass, res, req){
 		this.db.collection('users').findOne({name:user, isAdmin:true}, (err, result) => {
 			if(err) throw err;

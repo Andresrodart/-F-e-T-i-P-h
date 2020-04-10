@@ -50,46 +50,46 @@
 			</div>
 			<!-- Hero content: will be in the middle -->
 			<div class="hero-body">
-				<div class="container" id='workarea'> 
-					<!-- <h1 class="title has-text-centered">
+				<div class="container" id='workarea-container'> 
+					<h1 class="title has-text-centered">
 						Overview
 					</h1>
-					<h2 class="subtitle has-text-centered">
+					<!-- <h2 class="subtitle has-text-centered">
 						General information
 					</h2> -->
-					<div class="columns" id="workarea">
-						<nav class="column option-panel is-2 is-rounded is-paddingless">
-							<div id='Overview-options'>
-							</div>
-							<div id='Access-options' class="is-hidden">
-							</div>
-							<div id='Users-options' class="is-hidden">
+					<div class="columns">
+						<div class="column is-2 option-panel is-rounded is-paddingless">
+							<div class="" id='Overview-options'></div>
+							<div class="is-hidden" id='Access-options'> </div>
+							<div class="is-hidden" id='Users-options' > 
 								<ul>
 									<li class="is-active"><a onclick="changeOption(this)"><p>Registrar</p></a></li>
 								</ul>
 							</div>
-						</nav>
-						<div class="column" id ='Overview'>
 						</div>
-						<div class="column is-hidden" id='Access'>
-						</div>
-						<div class="column is-hidden" id='Users'>
-							<div class="columns is-multiline is-centered">
-								<div id='Registrar'>
-									<div class="column is-two-thirds"> 
-										<input class="input is-rounded" type="text" placeholder="Type your name or nickname" id='newUser'>
-									</div>
-									<div class="column is-two-thirds"> 
-										<input class="input is-rounded" type="password" placeholder="Type your password" id='newUserPassword'>
-									</div>
-									<div class="column is-two-thirds has-text-centered"> 
-										<button class="button main-color" onclick='registerUser(document.getElementById("newUser").value, document.getElementById("newUserPassword").value)'>Ready!</button>
+						<div class="column is-rounded">
+							<div class="columns is-vcentered" id ='Overview'> </div>
+							<div class="columns is-vcentered is-hidden" id='Access'> </div>
+							<div class="columns is-vcentered is-hidden" id='Users'>
+								<div class="column">
+									<div class="columns is-multiline is-centered" id='Registrar'>
+										<div class="column is-full">
+											<input class="input is-rounded" type="text" placeholder="Type your name or nickname" id='newUser'>
+										</div>
+										<div class="column is-full"> 
+											<input class="input is-rounded" type="number" placeholder="Type the room for the user" id='newUserRoom'>
+										</div>
+										<div class="column is-full"> 
+											<input class="input is-rounded" type="password" placeholder="Type your password" id='newUserPassword'>
+										</div>
+										<div class="column is-two-thirds has-text-centered"> 
+											<button class="button main-color" onclick='registerUser(document.getElementById("newUser").value, document.getElementById("newUserRoom").value, document.getElementById("newUserPassword").value)'>Ready!</button>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					
 				</div>
 			</div>
 		  

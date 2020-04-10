@@ -1,3 +1,6 @@
+# Project names
+DB/*
+
 # Logs
 logs
 *.log
