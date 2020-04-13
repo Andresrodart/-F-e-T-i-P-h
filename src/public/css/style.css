@@ -72,3 +72,11 @@ body{
 #option-panel li:hover{
 	background-color: rgba(0, 0, 0, 0.080);
 }
+
+#notification_user{
+	position: absolute;
+}
+.overflow-container{
+	overflow-y: scroll;
+	max-height: 57vh;
+}

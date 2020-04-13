@@ -63,6 +63,14 @@ class mongoFETIPH extends EventEmitter{
 					file: fileName
 				}).then( result => null)
 				.catch(err => null);
+				this.db.collection('resources').insertOne({
+					_id: fileName, //.toISOString()
+					name: nodePath.basename(fileName),
+					isRoom: false,
+					parent: nodePath.dirname(fileName),
+					cantAccess:[]
+				}).then( result => null)
+				.catch(err => null);
 			});
 			this.db.collection('users').findOne({name:username})
 			.then(result => {
@@ -94,7 +102,7 @@ class mongoFETIPH extends EventEmitter{
 	start(){
 		MongoClient.connect(this.options.mongo_conf.mongo_uri, { useUnifiedTopology: true })
 		.then(client => {
-			this.db = client.db('FETIPH');
+			this.db = client.db(this.options.mongo_conf.mongo_db);
 			return this.FTPserver.listen();
 		})
 		.then(() => { 

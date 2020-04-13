@@ -9,7 +9,7 @@
 		<script defer src="./javascript/workstation.js"></script> <!--load all styles -->    
 		<link rel="stylesheet" href="./css/style.css">
 	</head>
-	<body onload="change_area('overview')">
+	<body onload="init_page()">
 		<section class="hero is-fullheight">
 			<div class="hero-head">
 				<header class="navbar">
@@ -49,17 +49,40 @@
 			<div class="hero-body">
 				<div class="container" id='workarea-container'> 
 					<h1 class="title has-text-right" id="page_tittle">
-						Overview
+						Overview 
 					</h1>
 					<div class="columns">
 						<div class="column is-2 is-rounded is-paddingless" id="option-panel"></div>
 						<div class="column is-rounded" id="workarea">
-							<div class="columns is-multiline is-centered" id='access_log_area'>
-								<table id="access_log_table">
-									
-								</table>
+							<div class="columns is-vcentered is-multiline" id='access_log_area'>
+								<div class="column is-full overflow-container">
+									<table class="table is-fullwidth is-hoverable" id="access_log_table">
+										<tr>
+											<th>#</th>
+											<th>Date</th>
+											<th>User</th>
+											<th>IP</th>
+											<th>Type</th>
+										</tr>
+									</table>
+								</div>
+								<div class="column has-text-right"><button class="button main-color" onclick='get_access_log()'>More</button></div>
 							</div>
-							<div class="columns is-vcentered is-hidden" id='create_user_area'>
+							<div class="columns is-vcentered is-multiline is-hidden" id='transaction_log_area'>
+								<div class="column is-full overflow-container">
+									<table class="table is-fullwidth is-hoverable" id="transaction_log_table">
+										<tr>
+											<th>#</th>
+											<th>Date</th>
+											<th>User</th>
+											<th>IP</th>
+											<th>File</th>
+										</tr>
+									</table>
+								</div>
+								<div class="column has-text-right"><button class="button main-color" onclick='get_transaction_log()'>More</button></div>
+							</div>
+							<div class="columns is-vcentered is-centered is-hidden is relative" id='create_user_area'>
 								<div class="column">
 									<div class="columns is-multiline is-centered" id='Registrar'>
 										<div class="column is-full">
@@ -76,6 +99,7 @@
 										</div>
 									</div>
 								</div>
+								<div class="column is-two-thirds" id="notification_user"></div>
 							</div>
 						</div>
 					</div>

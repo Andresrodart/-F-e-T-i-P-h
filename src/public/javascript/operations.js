@@ -1,7 +1,18 @@
+var genericOptions = {
+	method: 'POST', 		// *GET, POST, PUT, DELETE, etc.
+	mode: 'cors',			// no-cors, *cors, same-origin
+	cache: 'no-cache', 		// *default, no-cache, reload, force-cache, only-if-cached
+	credentials: 'same-origin', // include, *same-origin, omit
+	headers: {
+	  'Content-Type': 'application/json'
+	},
+	redirect: 'follow', // manual, *follow, error
+	referrerPolicy: 'no-referrer', // no-referrer, *client
+	body: null
+};
 /**
  * Make a document smoothly appear adding class 'is-hidden'  
  * @param {Document.element} element HTML element to disappear
- * @param {function():any} callback callback function after disappearing element
  */
 function fade(element) {
 	return new Promise((resolve, reject) => {
@@ -20,7 +31,7 @@ function fade(element) {
 }
 /**
  * Make a document smoothly appear removing class 'is-hidden'  
- * @param {Document.element} element HTML element to disappear
+ * @param {Document.element} element - HTML element to disappear
  */
 function unfade(element) {
 	var op = 0.1;  // initial opacity
@@ -34,10 +45,16 @@ function unfade(element) {
     }, 10);
 }
 /**
+ * Generic callback.
+ * 
+ * @callback generic_callback - Get callback
+ * @param {Object} Json - Response in JSON
+ */
+/**
  * Make a generic post via fetch
- * @param {String} url url to where to send POST
- * @param {{Object}} options options to send POST
- * @param {function({Object}):any} callback callback function
+ * @param {String} url - url to where to send POST
+ * @param {Object} options - options to send POST
+ * @param {generic_callback} callback - callback function
  */
 function genericPost(url, options, callback){
 	fetch(url, options)
@@ -53,7 +70,7 @@ function genericPost(url, options, callback){
 /**
  * Make a generic get via fetch
  * @param {String} url url to where to send GET
- * @param {function({Object}):any} callback callback function
+ * @param {generic_callback} callback callback function
  */
 function genericGet(url, callback) {
 	fetch(url)
@@ -79,8 +96,9 @@ function genericGet(url, callback) {
 function createElement(structure){//type, classes, id, childs, inner_html, on_click){
 	let element = document.createElement(structure.type);
 	if(structure.id) element.id = structure.id;
+	if(structure.on_click) element.onclick = structure.on_click;
+	if(structure.inner_html) element.innerHTML += structure.inner_html;
 	if(structure.classes) structure.classes.forEach(value => element.classList.add(value));
 	if(structure.childs) structure.childs.forEach(value => element.appendChild(value));
-	if(structure.inner_html) element.innerHTML = structure.inner_html;
 	return element;
 }

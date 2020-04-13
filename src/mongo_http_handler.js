@@ -31,6 +31,14 @@ class http_handler{
 			if (!req.session.user) res.redirect('/');
 			else res.sendFile(__dirname + '/workstation.html');
 		});
+		app.get('/access_log/:page', (req, res) => {
+			if (!req.session.user) res.redirect('/');
+			else this.getAccessLog(req, res);
+		});
+		app.get('/transaction_log/:page', (req, res) => {
+			if (!req.session.user) res.redirect('/');
+			else this.getTransactionLog(req, res);
+		});
 		app.post('/checkAdmin', (req, res) => this.checkCredential(req.body.user, req.body.pass, res, req));
 		app.post('/firstAdmin', (req, res) => {
 			this.db.collection('users').findOne({isAdmin:true}).
@@ -58,6 +66,7 @@ class http_handler{
 		.then(result => {
 			if(result) res.json(false);
 			else getHash(req.body.pass, hash => {
+				if(req.body.user !== '' && req.body.pass !== '')
 				this.db.collection('users').insertOne({
 					name:req.body.user, 
 					pass:hash, 
@@ -65,7 +74,8 @@ class http_handler{
 					room:(req.body.room)? req.body.room:null
 				})
 				.then(result => res.json(result)) 
-				.catch(err => {throw err;});	
+				.catch(err => res.json(false));
+				else  res.json({empty:true});
 			});
 		})
 		.catch(err => {throw err;});
@@ -77,7 +87,7 @@ class http_handler{
 			if(result) compareHash(result.pass, pass, (isCorrect) => {
 				if(isCorrect && (req.session.user = user)){
 					this.db.collection('access_log').insertOne({
-						date: new Date(Date.now()), //.toISOString()
+						date: new Date(Date.now()),
 						user: user,
 						ip: req.ip,
 						type: req.protocol.toUpperCase() 
@@ -88,7 +98,21 @@ class http_handler{
 			else res.json(false);
 		});
 	}
-
+	getAccessLog(req, res){
+		this.db.collection('access_log').find({}, { projection: { _id: 0}}).sort({ date: -1 }).skip(parseInt(req.params.page * 10)).limit(10)
+		.toArray((err, result) => {
+			if(err) res.json(false);
+			res.json(result);
+		});
+	}
+	getTransactionLog(req, res){
+		this.db.collection('transaction_log').find({}, { projection: { _id: 0}}).sort({ date: -1 }).skip(parseInt(req.params.page * 10)).limit(10)
+		.toArray((err, result) => {
+			console.log(result);
+			if(err) res.json(false);
+			res.json(result);
+		});
+	}
 	start(mongoHandler){
 		this.db = mongoHandler;
 		app.listen(this.options.port, this.options.host, () => console.log(`Go to admin GUI at: http://${this.options.host}:${this.options.port}`));

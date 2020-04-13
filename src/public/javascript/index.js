@@ -12,7 +12,7 @@ var genericOptions = {
 };
 
 function checkCredentials(user, pass){
-	data = JSON.stringify({
+	let data = JSON.stringify({
 		user: user,
 		pass: pass
 	});
@@ -23,7 +23,7 @@ function checkCredentials(user, pass){
 }
 
 function registerAdmin(){
-	data = JSON.stringify({
+	let data = JSON.stringify({
 		user: document.getElementById('newAdmin').value,
 		pass: document.getElementById('newAdminPassword').value
 	});
