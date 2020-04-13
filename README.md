@@ -22,7 +22,7 @@ npm start
 ```
 The FTP server will be running at [ftp://localhost:5050] by default.By default the administration page will be running on [localhost:3000](localhost:3000). The first time it will ask you to crete an admin account. After that you will be redirected to the work area as I call the admin page. Once there you will need to go to users label and add a User so he can use the FTP server:
 
-![USER REGISTRATION EXAMPLE](https://raw.githubusercontent.com/Andresrodart/Fetiph/tree/master/src/public/images/IMAGE_1.PNG)
+![USER REGISTRATION EXAMPLE](https://raw.githubusercontent.com/Andresrodart/Fetiph/master/src/public/images/IMAGE_1.PNG)
 
 Open the **conf.json** and add your main folder. **NOTE:** Inside this folder all rooms (user root folder) should exist already. 
 ```JSON
