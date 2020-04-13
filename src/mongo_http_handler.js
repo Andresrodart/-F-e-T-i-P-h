@@ -31,7 +31,7 @@ class http_handler{
 			if (!req.session.user) res.redirect('/');
 			else res.sendFile(__dirname + '/workstation.html');
 		});
-		app.post('/checkAdmin', (req, res) => this.checkCredential('admin', req.body.user, req.body.pass, res, req));
+		app.post('/checkAdmin', (req, res) => this.checkCredential(req.body.user, req.body.pass, res, req));
 		app.post('/firstAdmin', (req, res) => {
 			this.db.collection('users').findOne({isAdmin:true}).
 			then(result => {
@@ -71,11 +71,18 @@ class http_handler{
 		.catch(err => {throw err;});
 	}
 
-	checkCredential(type, user, pass, res, req){
+	checkCredential(user, pass, res, req){
 		this.db.collection('users').findOne({name:user, isAdmin:true}, (err, result) => {
 			if(err) throw err;
 			if(result) compareHash(result.pass, pass, (isCorrect) => {
-				if(isCorrect && (req.session.user = user)) res.redirect('/workstation');
+				if(isCorrect && (req.session.user = user)){
+					this.db.collection('access_log').insertOne({
+						date: new Date(Date.now()), //.toISOString()
+						user: user,
+						ip: req.ip,
+						type: req.protocol.toUpperCase() 
+					}).then(result => res.redirect('/workstation'));
+				} 	
 				else res.json(false);
 			});
 			else res.json(false);

@@ -1,6 +1,6 @@
 {
 	"db":			"mongo",
-	"main_folder":	"./DB/",
+	"main_folder":	"A:/DB",
 	"ftp_conf":{
 					"url": 			"ftp://192.168.1.72:5050",
 					"pasv_url":		"192.168.1.72"
