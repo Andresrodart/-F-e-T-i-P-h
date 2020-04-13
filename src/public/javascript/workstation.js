@@ -10,8 +10,48 @@ var genericOptions = {
 	referrerPolicy: 'no-referrer', // no-referrer, *client
 	body: null
 };
+var views = {
+	overview:{
+		exist: false,
+		options: ['access_log', 'transaction_log'],
+		create: create_overview
+	},
+	users: {
+		exist: false,
+		options: ['add_user'],
+		create: create_users
+	}
+};
+var currentWorkArea = 'overview';
+function init_page() {
+	change_area('overview');
+}
+/**
+ * Change the area we are looking eg. Overview
+ * @param {string} area 
+ */
+function change_area(area){
+	if(!views[area].exist) views[area].create();
+	if(currentWorkArea !== area){
+		document.getElementById('li-' + currentWorkArea).classList.remove('is-active');
+		document.getElementById('li-' + area).classList.add('is-active');
+		fade(document.getElementById(currentWorkArea + '_option_panel'));
+		fade(getOptionArea(currentWorkArea));
+		fade(document.getElementById('page_tittle'))
+		.then(()=> {
+			document.getElementById('page_tittle').innerHTML = area.charAt(0).toUpperCase() + area.slice(1);
+			unfade(document.getElementById(area + '_option_panel'));
+			unfade(document.getElementById('page_tittle'));
+			unfade(getOptionArea(area));
+		});
+		currentWorkArea = area;
+	}
+}
 
-var currentWorkArea = 'Overview';
+function getOptionArea(area){
+	let selector = document.getElementById(area + '_option_panel').querySelector('.is-active');
+	return document.getElementById(selector.id + '_area');
+}
 
 function registerUser(user, room, password){
 	data = JSON.stringify({
@@ -23,18 +63,59 @@ function registerUser(user, room, password){
 	genericPost('/postUser', genericOptions, (answer) => console.log(answer));
 }
 
-function changeWorkArea(nextArea) {
-	fade(document.getElementById(currentWorkArea), document.getElementById(nextArea));
-	fade(document.getElementById(currentWorkArea + '-options'), document.getElementById(nextArea + '-options'));
-	document.getElementById('li-' + currentWorkArea).classList.remove('is-active');
-	document.getElementById('li-' + nextArea).classList.add('is-active');
-	currentWorkArea = nextArea;
-	document.getElementById('workarea-container').querySelector('h1.title').innerHTML = document.getElementById(currentWorkArea + '-options').querySelector('ul li.is-active a').innerHTML;
+function changeOption(newOption) {
+	
 }
 
-function changeOption(newOption) {
-	document.getElementById(currentWorkArea + '-options').querySelector('ul li.is-active').classList.remove('is-active');
+function getAccessLog(){
 	document.getElementById('workarea-container').querySelector('h1.title').value = newOption.innerHTML;
-	newOption.classList.add('is-active');
-	//fade(document.getElementById(newOption.innerHTML), document.getElementById(currentWorkArea).querySelector('div:not(.is-hidden):not(.column)'));
+}
+
+function create_users(){
+	let list = createElement({
+		type: 'ul',
+		childs:[
+			createElement({
+				type:'li', 
+				classes:['is-active'], 
+				id: 'create_user', 
+				inner_html: 'create user',
+				on_click: changeOption
+			})
+		]
+	});
+	document.getElementById('option-panel').appendChild(createElement({
+		type: 'div',
+		id: 'users_option_panel',
+		classes: ['is-hidden'],
+		childs:[list]}
+	));
+	views.users.exist = true;
+}
+
+function create_overview(){
+	let list = createElement({
+		type: 'ul',
+		childs:[
+			createElement({
+				type:'li', 
+				classes:['is-active'], 
+				id: 'access_log', 
+				inner_html: 'access log',
+				on_click: changeOption
+			}),
+			createElement({
+				type:'li', 
+				id: 'transaction_log', 
+				inner_html: 'transaction log',
+				on_click: changeOption
+			})
+		]
+	}); 	
+	document.getElementById('option-panel').appendChild(createElement({
+		type: 'div',
+		id: 'overview_option_panel',
+		childs:[list]}
+	));
+	views.overview.exist = true;
 }

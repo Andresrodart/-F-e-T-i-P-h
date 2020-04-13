@@ -34,7 +34,6 @@ function registerAdmin(){
 function login(){
 	genericGet('isAdminNew', answer => {
 		let next = (answer)? 'name' : 'setAdmin';
-		document.getElementById(next).style.opacity = 0.1;
-		fade(document.getElementById('login'), document.getElementById(next));
+		fade(document.getElementById('login')).then(() => unfade(document.getElementById(next)));
 	});
 }

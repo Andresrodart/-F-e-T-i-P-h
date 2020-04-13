@@ -2,8 +2,8 @@
 	"db":			"mongo",
 	"main_folder":	"A:/DB",
 	"ftp_conf":{
-					"url": 			"ftp://192.168.1.72:5050",
-					"pasv_url":		"192.168.1.72"
+					"url": 			"ftp://localhost:5050",
+					"pasv_url":		"192.168.95.1"
 	},
 	"mongo_conf":{
 					"mongo_uri": 	"mongodb://localhost:27017",

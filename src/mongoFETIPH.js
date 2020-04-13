@@ -5,25 +5,32 @@ const httpServer = require("./mongo_http_handler");
 const {FtpSrv, FileSystem} = require('ftp-srv');
 const EventEmitter = require('events');
 const nodePath = require('path');
+const _ = require('lodash');
 const fs = require('fs');
 /*				   Classes					*/
-// class MyFileSystem extends FileSystem {
-// 	constructor(connection, db, { root, cwd } = {}){
-// 		super(connection, root, cwd);
-// 		this.db = db;
-// 	}
+class FETIPHFileSystem extends FileSystem {
+ 	constructor(connection, db, user,{ root, cwd } = {}){
+ 		super(connection, {root, cwd});
+		this.db = db;
+		this.user = user;
+ 	}
 
-// 	list(path = '.') {
-// 		return this.db.collection('resources').findOne({
-// 			_id: nodePath.join	
-// 		})
-// 		const files = fs.readdirSync(path);
-// 		for (let index = 0; index < files.length; index++){
-// 			console.log(info);
-// 	   }
-// 		return Promise.resolve(['inbox', 'sent', 'trash']);
-// 	}
-// }
+ 	list(path = '.') {
+		const {fsPath} = this._resolvePath(path);
+ 	 	const files = fs.readdirSync(fsPath);
+		return	this.db.collection('resources').find({
+			name:{$in:files}, parent:fsPath, cantAccess:{$nin:[this.connection.ip, this.user.name]}
+		}).toArray().then( docs => {
+			const stats = [];
+			for (let i = 0; i < docs.length; i++){
+				let stat = fs.statSync(nodePath.normalize(docs[i]._id))
+				_.set(stat, 'name', docs[i].name);
+				stats.push(stat);
+			}
+			return Promise.resolve(stats);
+		}).catch(err => console.error(err));
+ 	}
+}
 
 class mongoFETIPH extends EventEmitter{
 	constructor(options){
@@ -36,12 +43,26 @@ class mongoFETIPH extends EventEmitter{
 			//connection.ip, username, password
 			connection.on('RETR', (error, filePath) => {
 				if(error) throw error;
-				//console.log(filePath);
+				this.db.collection('transaction_log').insertOne({
+					date: new Date(Date.now()), //.toISOString()
+					user: username,
+					ip: connection.ip,
+					type: 'Download',
+					file: filePath
+				}).then( result => null)
+				.catch(err => null);
 			});
 	
 			connection.on('STOR', (error, fileName) => {
 				if(error) throw error;
-				//console.log(fileName);
+				this.db.collection('transaction_log').insertOne({
+					date: new Date(Date.now()), //.toISOString()
+					user: username,
+					ip: connection.ip,
+					type: 'Upload',
+					file: fileName
+				}).then( result => null)
+				.catch(err => null);
 			});
 			this.db.collection('users').findOne({name:username})
 			.then(result => {
@@ -61,13 +82,12 @@ class mongoFETIPH extends EventEmitter{
 		});
 	}
 	newConnection(resolve, user, connection){
-		console.log(nodePath.join(__dirname, this.options.main_folder, user.room))
 		this.db.collection('access_log').insertOne({
 			date: new Date(Date.now()), //.toISOString()
 			user: user.name,
 			ip: connection.ip,
 			type: 'FTP'
-		}).then( result => resolve({fs: new FileSystem(connection, {
+		}).then( result => resolve({fs: new FETIPHFileSystem(connection, this.db, user,{
 			root: nodePath.join(this.options.main_folder, user.room), 
 		})}));
 	}
